@@ -1,113 +1,56 @@
-# Chrome Extension Webpack Boilerplate
+# Veras wallet
+***
+벨라스는 블록체인 트릴레마 중 확장성 문제를 해결하기 위해 생겨났습니다. 초당 약 50,000개의 트랜잭션을 처리할 수 있고 낮은 수수료로 이용할 수 있습니다.
+기본적으로 위임 지분 증명 방식(DPoS)를 사용하고 있으나 AI를 활용하여 네트워크 상황에 맞는 노드를 선출하고 있습니다. 
 
-A basic foundation boilerplate for rich Chrome Extensions using [Webpack](https://webpack.github.io/) to help you write modular and modern Javascript code, load CSS easily and [automatic reload the browser on code changes](https://webpack.github.io/docs/webpack-dev-server.html#automatic-refresh).
+벨라스 월렛 프로젝트는 벨라스 네트워크를 기반으로 하는 블록체인 월렛으로 크롬 익스텐션으로 만들어졌습니다. 
 
-## Developing a new extension
-_I'll assume that you already read the [Webpack docs](https://webpack.github.io/docs) and the [Chrome Extension](https://developer.chrome.com/extensions/getstarted) docs._
+### 프로젝트 상세 소개
+***
+- [Notion](https://codestates.notion.site/730c209b521941d29b9395e619ed6214, "Notion")
 
+## Get started
+***
 
-1. Check if your Node.js version is >= 6.
-2. Clone the repository.
-3. Install [yarn](https://yarnpkg.com/lang/en/docs/install/).
-4. Run `yarn`.
-5. Change the package's name and description on `package.json`.
-6. Change the name of your extension on `src/manifest.json`.
-7. Run `npm run start`
-8. Load your extension on Chrome following:
-    1. Access `chrome://extensions/`
-    2. Check `Developer mode`
-    3. Click on `Load unpacked extension`
-    4. Select the `build` folder.
-8. Have fun.
-
-## Structure
-All your extension's development code must be placed in `src` folder, including the extension manifest.
-
-The boilerplate is already prepared to have a popup, a options page and a background page. You can easily customize this.
-
-Each page has its own [assets package defined](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/blob/master/webpack.config.js#L16-L20). So, to code on popup you must start your code on `src/js/popup.js`, for example.
-
-You must use the [ES6 modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) to a better code organization. The boilerplate is already prepared to that and [here you have a little example](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/blob/master/src/js/popup.js#L2-L4).
-
-## Webpack auto-reload and HRM
-To make your workflow much more efficient this boilerplate uses the [webpack server](https://webpack.github.io/docs/webpack-dev-server.html) to development (started with `npm run server`) with auto reload feature that reloads the browser automatically every time that you save some file o your editor.
-
-You can run the dev mode on other port if you want. Just specify the env var `port` like this:
-
-```
-$ PORT=6002 npm run start
+프로젝트를 받고 터미널에서 명령어를 입력하세요.
+```javascript
+yarn install
 ```
 
-## Content Scripts
+설치 후 프로젝트를 시작합니다.\
+프로젝트 루트에 build 폴더가 생성되는 것을 확인 할 수 있습니다.
 
-Although this boilerplate uses the webpack dev server, it's also prepared to write all your bundles files on the disk at every code change, so you can point, on your extension manifest, to your bundles that you want to use as [content scripts](https://developer.chrome.com/extensions/content_scripts), but you need to exclude these entry points from hot reloading [(why?)](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/issues/4#issuecomment-261788690). To do so you need to expose which entry points are content scripts on the `webpack.config.js` using the `chromeExtensionBoilerplate -> notHotReload` config. Look the example below.
-
-Let's say that you want use the `myContentScript` entry point as content script, so on your `webpack.config.js` you will configure the entry point and exclude it from hot reloading, like this:
-
-```js
-{
-  …
-  entry: {
-    myContentScript: "./src/js/myContentScript.js"
-  },
-  chromeExtensionBoilerplate: {
-    notHotReload: ["myContentScript"]
-  }
-  …
-}
+```javascript
+yarn start
 ```
 
-and on your `src/manifest.json`:
+chrome으로 아래 주소를 열면 크롬 확장프로그램 리스트를 확인 할 수 있습니다.
 
-```json
-{
-  "content_scripts": [
-    {
-      "matches": ["https://www.google.com/*"],
-      "js": ["myContentScript.bundle.js"]
-    }
-  ]
-}
+[chrome://extensions/](chrome://extensions/)
 
-```
+오른쪽 상단의 개발자 모드 토글을 선택해주세요.
 
-## Packing
-After the development of your extension run the command
+![image](https://user-images.githubusercontent.com/17466930/195876477-80b62e75-133f-468c-ba51-f2c655034b8b.png)
 
-```
-$ NODE_ENV=production npm run build
-```
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
-
-## Secrets
-If you are developing an extension that talks with some API you probably are using different keys for testing and production. Is a good practice you not commit your secret keys and expose to anyone that have access to the repository.
-
-To this task this boilerplate import the file `./secrets.<THE-NODE_ENV>.js` on your modules through the module named as `secrets`, so you can do things like this:
-
-_./secrets.development.js_
-
-```js
-export default { key: "123" };
-```
-
-_./src/popup.js_
-
-```js
-import secrets from "secrets";
-ApiCall({ key: secrets.key });
-```
-:point_right: The files with name `secrets.*.js` already are ignored on the repository.
-
-## With React.js
-:bulb: If you want use [React.js](https://facebook.github.io/react/) with this boilerplate, check the **[react branch](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/tree/react)**.
+**압축해제된 확장 프로그램을 로드합니다** 버튼을 클릭합니다.
 
 
-## Contributing
+프로젝트 루트에 만들어진 build 폴더를 선택하면 확장 프로그램이 추가된 것을 볼 수 있습니다.
 
-1. **Please!! Do not create a pull request without an issue before discussing the problem.**
-2. On your PR make sure that you are following the current codebase style.
-3. Your PR must be single purpose. Resolve just one problem on your PR.
-4. Make sure to commit in the same style that we are committing until now on the project.
 
--------------
-Samuel Simões ~ [@samuelsimoes](https://twitter.com/samuelsimoes) ~ [Blog](http://blog.samuelsimoes.com/)
+### 개발 스펙
+***
+ReactJS, Recoil, velas web3js
+
+### 참고 사이트
+***
+https://velas.com/en <br/> 
+https://velas.github.io/web3.js/
+
+### 프로젝트 팀원
+***
+모혜성(hyeseong0914@naver.com)\
+윤초희(chohee1231@gmail.com)
+
+
+
