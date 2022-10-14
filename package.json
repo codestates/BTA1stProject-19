@@ -30,6 +30,7 @@
   "author": "HyeseongMo <hyeseong0914@naver.com>",
   "license": "MIT",
   "dependencies": {
+    "@velas/account-client": "^0.2.40",
     "@velas/web3": "^0.1.15"
   }
 }
