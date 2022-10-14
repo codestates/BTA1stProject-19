@@ -29,5 +29,7 @@
   "repository": "https://github.com/HyeseongMo/chrome-extension-webpack-boilerplate.git",
   "author": "HyeseongMo <hyeseong0914@naver.com>",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@velas/web3": "^0.1.15"
+  }
 }
