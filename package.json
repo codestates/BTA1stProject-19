@@ -31,6 +31,7 @@
   "license": "MIT",
   "dependencies": {
     "@velas/account-client": "^0.2.40",
-    "@velas/web3": "^0.1.15"
+    "@velas/web3": "^0.1.15",
+    "bs58": "^5.0.0"
   }
 }
