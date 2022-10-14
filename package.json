@@ -6,7 +6,16 @@
     "build": "node utils/build.js",
     "start": "node utils/webserver.js"
   },
+  "dependencies": {
+    "@velas/web3": "^0.1.15",
+    "bs58": "^5.0.0",
+    "react": "16.12.0",
+    "react-dom": "16.12.0"
+  },
   "devDependencies": {
+    "@babel/core": "7.7.4",
+    "@babel/preset-react": "7.7.4",
+    "babel-loader": "8.0.6",
     "clean-webpack-plugin": "3.0.0",
     "copy-webpack-plugin": "5.0.5",
     "css-loader": "3.2.0",
@@ -14,24 +23,17 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "^7.31.10",
     "file-loader": "4.3.0",
     "fs-extra": "8.1.0",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
     "prettier": "^2.7.1",
+    "react-hot-loader": "4.12.18",
     "style-loader": "1.0.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0",
     "write-file-webpack-plugin": "4.5.1"
-  },
-  "main": "index.js",
-  "repository": "https://github.com/HyeseongMo/chrome-extension-webpack-boilerplate.git",
-  "author": "HyeseongMo <hyeseong0914@naver.com>",
-  "license": "MIT",
-  "dependencies": {
-    "@velas/account-client": "^0.2.40",
-    "@velas/web3": "^0.1.15",
-    "bs58": "^5.0.0"
   }
 }

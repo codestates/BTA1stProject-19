@@ -3,12 +3,14 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  parser: '@babel/eslint-parser',
-  extends: ['airbnb-base', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [],
+  plugins: ['react'],
   rules: {},
-};
+}
