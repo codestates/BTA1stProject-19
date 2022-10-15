@@ -1,9 +1,12 @@
-import "../css/popup.css";
-import Greeting from "./popup/greeting_component.jsx";
-import React from "react";
-import { render } from "react-dom";
+import '../css/popup.css'
+import Greeting from '../component/greeting_component'
+import React from 'react'
+import { RecoilRoot } from 'recoil'
+import { render } from 'react-dom'
 
 render(
-  <Greeting/>,
-  window.document.getElementById("app-container")
-);
+  <RecoilRoot>
+    <Greeting />
+  </RecoilRoot>,
+  window.document.getElementById('app-container'),
+)
