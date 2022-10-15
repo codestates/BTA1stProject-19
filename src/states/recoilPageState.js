@@ -1,6 +1,7 @@
 import { atom } from 'recoil'
+import {Page} from "../enum/enum";
 
 export const recoilPageState = atom({
   key: 'pageState',
-  default: 0,
+  default: Page.START,
 })
