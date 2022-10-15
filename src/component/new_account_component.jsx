@@ -1,9 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
 import { recoilPageState } from '../states/recoilPageState'
-import {Box, Button, Container, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
-import {CreateAccountByMnemonic, CreateMnemonic} from "../api/keyPair";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+import { CreateAccountByMnemonic, CreateMnemonic } from '../api/keyPair'
 
 const NewAccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -18,15 +26,15 @@ const NewAccountComponent = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    });
-  };
+      behavior: 'smooth',
+    })
+  }
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = e => {
     setPassword(e.target.value)
   }
 
-  const handleChangeConfirm = (e) => {
+  const handleChangeConfirm = e => {
     const confirmPassword = e.target.value
     setErrorMessage(confirmPassword !== password ? '비밀번호가 다릅니다.' : '')
   }
@@ -37,8 +45,8 @@ const NewAccountComponent = () => {
     if (mnemonics.length === 0) {
       const mnemonicArray = CreateMnemonic().split(' ')
       setMnemonics(mnemonicArray)
-      setTypedMnemonics(Array.from({length: mnemonicArray.length}, () => ''))
-      setConfirmMnemonics(Array.from({length: mnemonicArray.length}, () => 0))
+      setTypedMnemonics(Array.from({ length: mnemonicArray.length }, () => ''))
+      setConfirmMnemonics(Array.from({ length: mnemonicArray.length }, () => 0))
     }
   }
 
@@ -63,10 +71,11 @@ const NewAccountComponent = () => {
 
   const handleCompleteAll = () => {
     try {
-      const {publicKey, secretKey} = CreateAccountByMnemonic(mnemonics.join(' '), password)
-      chrome.storage.local.set({publicKey: publicKey}, function () {
-
-      })
+      const { publicKey, secretKey } = CreateAccountByMnemonic(
+        mnemonics.join(' '),
+        password,
+      )
+      chrome.storage.local.set({ publicKey: publicKey }, () => {})
     } catch (e) {
       console.log(e)
     }
@@ -93,18 +102,19 @@ const NewAccountComponent = () => {
       margin: '10px -12px 20px',
     },
     button: {
-      width: "45%",
-      margin: '8px'
-    }
-  }))();
+      width: '45%',
+      margin: '8px',
+    },
+  }))()
   return (
     <div>
       <Container className={classes.container}>
-        {
-          step === 0 &&
+        {step === 0 && (
           <Box className={classes.passwordContainer}>
             <Box>
-              <Typography variant={'subtitle1'}>비밀 번호를 입력해주세요.</Typography>
+              <Typography variant={'subtitle1'}>
+                비밀 번호를 입력해주세요.
+              </Typography>
             </Box>
             <Box className={classes.inputContainer}>
               <TextField
@@ -115,7 +125,7 @@ const NewAccountComponent = () => {
                 multiline
                 onChange={handleChangePassword}
               />
-              <Box/>
+              <Box />
               <TextField
                 required
                 type="password"
@@ -132,79 +142,89 @@ const NewAccountComponent = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleStepMnemonic}
-                fullWidth={true}>
+                fullWidth={true}
+              >
                 확인
               </Button>
             </Box>
           </Box>
-        }
-        {
-          step === 1 &&
+        )}
+        {step === 1 && (
           <Box className={classes.mnemonicContainer}>
             <Box className={classes.mnemonicNotice}>
-              <Typography variant="h5" gutterBottom>비밀 복구 구문</Typography>
-              <Typography variant="subtitle2" gutterBottom>
-                비밀 백업 구문을 이용하면 계정을 쉽게 백업하고 복구할 수 있습니다.<br/>
-                이 구문을 기억하세요.
+              <Typography variant="h5" gutterBottom>
+                비밀 복구 구문
               </Typography>
-              <Typography variant="caption" display="block" color="error" gutterBottom>
+              <Typography variant="subtitle2" gutterBottom>
+                비밀 백업 구문을 이용하면 계정을 쉽게 백업하고 복구할 수
+                있습니다.
+                <br />이 구문을 기억하세요.
+              </Typography>
+              <Typography
+                variant="caption"
+                display="block"
+                color="error"
+                gutterBottom
+              >
                 경고: 비밀 복구 구문은 절대로 공개하지 마세요.
               </Typography>
             </Box>
             <Grid container spacing={3} className={classes.mnemonicGrid}>
-              {
-                mnemonics.length > 0 && mnemonics.map((mnemonic, index) => {
+              {mnemonics.length > 0 &&
+                mnemonics.map((mnemonic, index) => {
                   return (
                     <Grid item xs={6} key={mnemonic}>
                       <TextField
-                        disabled = {true}
-                        defaultValue = {mnemonic}
+                        disabled={true}
+                        defaultValue={mnemonic}
                         label={index + 1}
                       />
                     </Grid>
                   )
-                })
-              }
+                })}
             </Grid>
-            <Button  variant="contained"
-                     color="primary"
-                     onClick={handleStepConfirmMnemonic}
-                     fullWidth={true}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleStepConfirmMnemonic}
+              fullWidth={true}
+            >
               확인
             </Button>
           </Box>
-        }
-        {
-          step === 2 &&
+        )}
+        {step === 2 && (
           <Box className={classes.mnemonicContainer}>
             <Box className={classes.mnemonicNotice}>
-              <Typography variant="h5" gutterBottom>비밀 복구 구문 확인</Typography>
+              <Typography variant="h5" gutterBottom>
+                비밀 복구 구문 확인
+              </Typography>
               <Typography variant="subtitle2" gutterBottom>
                 각 구문을 순서대로 입력해서 올바른지 확인하세요.
               </Typography>
             </Box>
             <Grid container spacing={3} className={classes.mnemonicGrid}>
-              {
-                confirmMnemonics.length > 0 && confirmMnemonics.map((value, index) => {
+              {confirmMnemonics.length > 0 &&
+                confirmMnemonics.map((value, index) => {
                   return (
                     <Grid item xs={6} key={index}>
                       <TextField
                         error={value === 2}
-                        defaultValue = {typedMnemonics[index]}
+                        defaultValue={typedMnemonics[index]}
                         label={index + 1}
-                        onChange={(e) => {
+                        onChange={e => {
                           handleCheckSeedPhase(e.target.value, index)
                         }}
                       />
                     </Grid>
                   )
-                })
-              }
+                })}
             </Grid>
             <Button
               className={classes.button}
               variant="outlined"
-              onClick={handleStepMnemonic}>
+              onClick={handleStepMnemonic}
+            >
               다시보기
             </Button>
             <Button
@@ -212,11 +232,12 @@ const NewAccountComponent = () => {
               disabled={!completeMnemonic}
               variant="contained"
               color="primary"
-              onClick={handleCompleteAll}>
+              onClick={handleCompleteAll}
+            >
               확인
             </Button>
           </Box>
-        }
+        )}
       </Container>
     </div>
   )
