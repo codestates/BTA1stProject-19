@@ -14,17 +14,6 @@ import Transfer from './transfer_component'
 import * as crypto from 'crypto-js'
 
 const GreetingComponent = () => {
-  const [page, setPage] = useRecoilState(recoilPageState)
-  const [netWork, setNetwork] = useRecoilState(recoilNetWork)
-
-  useEffect(() => {
-    console.log(netWork.RPC)
-    // const encTest = crypto.AES.encrypt('test', 'test').toString()
-    // const decTest = crypto.AES.decrypt(encTest, 'test')
-    // const original = decTest.toString(crypto.enc.Utf8)
-    // console.log(encTest, decTest, original)
-  }, [])
-
   const classes = makeStyles(() => ({
     appRoot: {
       paddingTop: '56px',

@@ -76,7 +76,6 @@ const NewAccountComponent = () => {
         mnemonics.join(' '),
         password,
       )
-
       const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
       const encSecretKey = crypto.AES.encrypt(secretKey, encPassword).toString()
       chrome.storage.local.set({ publicKey: publicKey })
