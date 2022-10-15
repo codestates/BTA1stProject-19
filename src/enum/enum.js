@@ -2,6 +2,8 @@ export const Page = {
   START: 'start',
   LOGIN: 'login',
   ACCOUNT: 'account',
+  NEW_ACCOUNT: 'new_account',
+  RESTORE_ACCOUNT: 'restore_account',
 }
 
 export const Network = {

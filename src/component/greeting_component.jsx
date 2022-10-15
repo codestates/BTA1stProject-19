@@ -6,6 +6,9 @@ import TestButton from './button_component'
 import {recoilPageState} from '../states/recoilPageState'
 import {Page} from "../enum/enum";
 import {makeStyles} from "@material-ui/core";
+import Login from "./login_component";
+import NewAccount from "./new_account_component";
+import RestoreAccount from "./restore_account_component";
 
 const GreetingComponent = () => {
   const recoilPageStateSelector = selector({
@@ -58,13 +61,21 @@ useEffect(() => {
           <div>
             <p>{page}Hello!!, find me on src/js/popup/greeting_component.jsx</p>
             <img src={icon} />
-            <TestButton />
+            <TestButton pageURL={Page.LOGIN}/>
           </div>
         )
       case Page.LOGIN:
-        return <div>1</div>
+        return (
+          <div>
+            <Login/>
+          </div>
+        )
       case Page.ACCOUNT:
         return <div>Account</div>
+      case Page.NEW_ACCOUNT:
+        return <div><NewAccount/></div>
+      case Page.RESTORE_ACCOUNT:
+        return <div><RestoreAccount/></div>
       default:
         return null
     }
