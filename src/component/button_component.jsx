@@ -4,11 +4,13 @@ import { hot } from 'react-hot-loader'
 import { recoilPageState } from '../states/recoilPageState'
 import {Button} from "@material-ui/core";
 
-const ButtonComponent = () => {
+const ButtonComponent = (props) => {
   const [page, setPage] = useRecoilState(recoilPageState)
+  // eslint-disable-next-line react/prop-types
+  const {pageURL} = props
 
   const toNextPage = () => {
-    setPage(page + 1)
+    setPage(pageURL)
   }
 
   return (

@@ -17,5 +17,5 @@ export const CreateAccountByMnemonic = (mnemonic, password) => {
 }
 
 export const CreateMnemonic = () => {
-  return bip39.generateMnemonic(256);
+  return bip39.generateMnemonic();
 }
