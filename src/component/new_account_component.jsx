@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { CreateAccountByMnemonic, CreateMnemonic } from '../api/keyPair'
+import * as crypto from 'crypto-js'
 
 const NewAccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -75,7 +76,13 @@ const NewAccountComponent = () => {
         mnemonics.join(' '),
         password,
       )
-      chrome.storage.local.set({ publicKey: publicKey }, () => {})
+
+      const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
+      const encSecretKey = crypto.AES.encrypt(secretKey, encPassword).toString()
+      chrome.storage.local.set({ publicKey: publicKey })
+      chrome.storage.local.set({ mnemonics: mnemonics.join(' ') })
+      chrome.storage.local.set({ password: encPassword })
+      chrome.storage.local.set({ secretKey: encSecretKey })
     } catch (e) {
       console.log(e)
     }

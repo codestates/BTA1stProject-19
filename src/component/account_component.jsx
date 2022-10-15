@@ -1,39 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
-import { recoilPageState } from '../states/recoilPageState'
+import { recoilNetWork } from '../states/recoilPageState'
 import { Button } from '@material-ui/core'
-import { Page } from '../enum/enum'
-import { Keypair, Connection, LAMPORTS_PER_SOL } from '@velas/web3'
+import { Connection } from '@velas/web3'
 import { makeStyles } from '@material-ui/core/styles'
-import * as bs58 from 'bs58'
 import copy from 'copy-to-clipboard'
-import { fontSize } from '@material-ui/system'
 
 const AccountComponent = () => {
-  const [page, setPage] = useRecoilState(recoilPageState)
+  const [netWork, setNetwork] = useRecoilState(recoilNetWork)
+  const [publicKey, setPublicKey] = useState('')
   const [balance, setBalance] = useState(0)
 
   useEffect(() => {
     getBalance()
   }, [])
 
-  const connection = new Connection('https://api.devnet.solana.com')
-
-  const keypair = Keypair.generate()
-  const publicKey = keypair.publicKey.toBase58()
-  const secretKey = keypair.secretKey
-  const secretKeyBS58 = bs58.encode(keypair.secretKey)
-  console.log(`public key: ${publicKey}}`)
-  console.log(`private key(raw): ${secretKey}`)
-  console.log(`private key(bs58): ${secretKeyBS58}`)
-
   const getBalance = async () => {
-    const feePayer = Keypair.fromSecretKey(bs58.decode(secretKeyBS58))
-    console.log('feePayer', feePayer)
-    const tempBalance = await connection.getBalance(feePayer.publicKey)
-    setBalance(tempBalance)
-    console.log(`${balance / LAMPORTS_PER_SOL} SOL`)
+    const connection = new Connection(netWork.RPC)
+    chrome.storage.local.get('publicKey', async result => {
+      const tempPublicKey = result.publicKey
+      setPublicKey(tempPublicKey)
+      const tempBalance = await connection.getBalance(publicKey)
+      setBalance(tempBalance)
+    })
   }
 
   const copyPublicKey = () => {
