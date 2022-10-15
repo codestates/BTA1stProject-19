@@ -14,6 +14,7 @@ import {
 import {useRecoilState} from "recoil";
 import {recoilPageState} from "../states/recoilPageState";
 import {Page} from "../enum/enum";
+import clsx from 'clsx';
 
 
 const NavComponent = () => {
@@ -98,7 +99,7 @@ const NavComponent = () => {
       <AppBar
         color={'default'}
         position="fixed"
-        className={(classes.appBar, {
+        className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
@@ -108,7 +109,7 @@ const NavComponent = () => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={(classes.menuButton, open && classes.hide)}
+            className={clsx(classes.menuButton, open && classes.hide)}
           >
             <span className="material-icons">menu</span>
           </IconButton>
