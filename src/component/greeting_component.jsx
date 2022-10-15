@@ -7,6 +7,8 @@ import { Keypair, Connection, LAMPORTS_PER_SOL } from '@velas/web3'
 import * as bs58 from 'bs58'
 import TestButton from './button_component'
 import { recoilPageState } from '../states/recoilPageState'
+import {Page} from "../enum/enum";
+import {makeStyles} from "@material-ui/core";
 
 const GreetingComponent = () => {
   // const [page, setPage] = useRecoilState(recoilPageState)
@@ -38,9 +40,15 @@ const GreetingComponent = () => {
   //   console.log(`${balance / LAMPORTS_PER_SOL} SOL`)
   // }
 
+  const classes = makeStyles(() => ({
+    appRoot : {
+      paddingTop: "56px"
+    }
+  }))()
+
   const render = () => {
     switch (page) {
-      case 0:
+      case Page.START:
         return (
           <div>
             <p>{page}Hello!!, find me on src/js/popup/greeting_component.jsx</p>
@@ -48,16 +56,16 @@ const GreetingComponent = () => {
             <TestButton />
           </div>
         )
-      case 1:
-        return <div></div>
-      case 2:
-        return <div></div>
+      case Page.LOGIN:
+        return <div>1</div>
+      case Page.ACCOUNT:
+        return <div>Account</div>
       default:
         return null
     }
   }
 
-  return <div id="App">{render()}</div>
+  return <div id="App"><div className={classes.appRoot}>{render()}</div></div>
 }
 
 export default hot(module)(GreetingComponent)

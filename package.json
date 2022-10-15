@@ -7,6 +7,7 @@
     "start": "node utils/webserver.js"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@velas/web3": "^0.1.15",
     "bs58": "^5.0.0",
     "react": "16.12.0",
