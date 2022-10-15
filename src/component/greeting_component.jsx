@@ -1,11 +1,16 @@
-import React from 'react'
-import {selector, useRecoilValue} from 'recoil'
+import React, { useState, useEffect } from 'react'
+import { useRecoilState, selector, useRecoilValue } from 'recoil'
 import icon from '../img/icon-128.png'
-import {hot} from 'react-hot-loader'
+import { hot } from 'react-hot-loader'
+import * as velaseWeb3 from '@velas/web3'
+import { Keypair, Connection, LAMPORTS_PER_SOL } from '@velas/web3'
+import * as bs58 from 'bs58'
 import TestButton from './button_component'
-import {recoilPageState} from '../states/recoilPageState'
-import {Page} from "../enum/enum";
-import {makeStyles} from "@material-ui/core";
+import { recoilPageState } from '../states/recoilPageState'
+import { Page } from '../enum/enum'
+import { makeStyles } from '@material-ui/core'
+import AccountPage from './account_component'
+import TransferPage from './transfer_component'
 
 const GreetingComponent = () => {
   const recoilPageStateSelector = selector({
@@ -36,19 +41,10 @@ const GreetingComponent = () => {
   //   console.log(`${balance / LAMPORTS_PER_SOL} SOL`)
   // }
 
-/*
-useEffect(() => {
-  const network = useRecoilValue(recoilNetworkStateSelector)
-    console.log(network)
-    const mnemonic = CreateMnemonic()
-    console.log(mnemonic)
-    CreateAccountByMnemonic(mnemonic, "test")
-  })*/
-
   const classes = makeStyles(() => ({
-    appRoot : {
-      paddingTop: "56px"
-    }
+    appRoot: {
+      paddingTop: '56px',
+    },
   }))()
 
   const render = () => {
@@ -64,13 +60,19 @@ useEffect(() => {
       case Page.LOGIN:
         return <div>1</div>
       case Page.ACCOUNT:
-        return <div>Account</div>
+        return <AccountPage />
+      case Page.TRANSFER:
+        return <TransferPage />
       default:
         return null
     }
   }
 
-  return <div id="App"><div className={classes.appRoot}>{render()}</div></div>
+  return (
+    <div id="App">
+      <div className={classes.appRoot}>{render()}</div>
+    </div>
+  )
 }
 
 export default hot(module)(GreetingComponent)

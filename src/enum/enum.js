@@ -2,6 +2,7 @@ export const Page = {
   START: 'start',
   LOGIN: 'login',
   ACCOUNT: 'account',
+  TRANSFER: 'transfer',
 }
 
 export const Network = {
