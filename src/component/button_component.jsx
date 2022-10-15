@@ -2,7 +2,7 @@ import React from 'react'
 import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
 import { recoilPageState } from '../states/recoilPageState'
-import {Button} from "@material-ui/core";
+import { Button } from '@material-ui/core'
 
 const ButtonComponent = (props) => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -15,7 +15,10 @@ const ButtonComponent = (props) => {
 
   return (
     <div>
-      <Button variant="contained" onClick={toNextPage}> Test Button</Button>
+      <Button variant="contained" onClick={toNextPage}>
+        {' '}
+        Test Button
+      </Button>
     </div>
   )
 }

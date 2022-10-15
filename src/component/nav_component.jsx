@@ -1,37 +1,38 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
 import {
   AppBar,
-  Divider, Drawer,
+  Divider,
+  Drawer,
   IconButton,
   List,
   ListItem,
   ListItemText,
   makeStyles,
   useTheme,
-  Toolbar
-} from "@material-ui/core";
-import {useRecoilState} from "recoil";
-import {recoilPageState} from "../states/recoilPageState";
-import {Page} from "../enum/enum";
-import clsx from 'clsx';
-
+  Toolbar,
+} from '@material-ui/core'
+import { useRecoilState } from 'recoil'
+import { recoilPageState } from '../states/recoilPageState'
+import { Page } from '../enum/enum'
+import clsx from 'clsx'
 
 const NavComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const goToPage = (page) => {
+  const goToPage = page => {
+    setOpen(false)
     setPage(page)
   }
 
-  const drawerWidth = 100;
-  const classes = makeStyles((theme) => ({
+  const drawerWidth = 100
+  const classes = makeStyles(theme => ({
     root: {
       display: 'flex',
     },
     appBar: {
-      backgroundColor: "#fff",
+      backgroundColor: '#fff',
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -82,17 +83,17 @@ const NavComponent = () => {
       }),
       marginLeft: 0,
     },
-  }))();
+  }))()
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -126,13 +127,22 @@ const NavComponent = () => {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            <span className="material-icons">{theme.direction === 'ltr' ? "chevron_left " : "chevron_right"}</span>
+            <span className="material-icons">
+              {theme.direction === 'ltr' ? 'chevron_left ' : 'chevron_right'}
+            </span>
           </IconButton>
         </div>
         <Divider />
         <List>
           <ListItem button key="account" onClick={() => goToPage(Page.ACCOUNT)}>
-            <ListItemText primary={"내계정"} />
+            <ListItemText primary={'내계정'} />
+          </ListItem>
+          <ListItem
+            button
+            key="transfer"
+            onClick={() => goToPage(Page.TRANSFER)}
+          >
+            <ListItemText primary={'송금'} />
           </ListItem>
         </List>
       </Drawer>
