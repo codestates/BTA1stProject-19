@@ -14,6 +14,7 @@ import logo from '../img/velas-logo.png'
 import { Page } from '../enum/enum'
 import { IsSecretKeyValid } from '../api/keyPair'
 import * as crypto from 'crypto-js'
+import {UnlockWallet} from "../api/account";
 
 const LoginComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -37,6 +38,7 @@ const LoginComponent = () => {
           const decSecretKey = crypto.AES.decrypt(encSecretKey, encPassword)
           const originalSecretKey = decSecretKey.toString(crypto.enc.Utf8)
           if (IsSecretKeyValid(originalSecretKey)) {
+            UnlockWallet()
             setPage(Page.ACCOUNT)
           } else {
             alert('계정이 존재하지 않습니다.')

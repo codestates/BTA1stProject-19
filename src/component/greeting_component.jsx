@@ -12,14 +12,34 @@ import RestoreAccount from './recover_account_component'
 import Account from './account_component'
 import Transfer from './transfer_component'
 import * as crypto from 'crypto-js'
+import NavComponent from "./nav_component";
 
 const GreetingComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
+  const [isLockWallet, setIsLockWallet] = useState(false)
+  const [isLogin, setIsLogin] = useState(false)
   const classes = makeStyles(() => ({
     appRoot: {
       paddingTop: '56px',
     },
   }))()
+
+  useEffect(() => {
+    init()
+  }, [page])
+
+  const init = () => {
+    // 지갑이 락 상태인경우
+    chrome.storage.local.get('lock', result => {
+      const lockStatus = result.lock
+      setIsLockWallet(!!lockStatus)
+    })
+    //로그인 상태가 아닌 경우
+    chrome.storage.local.get('publicKey', result => {
+      const publicKey = result.publicKey
+      setIsLogin(!!publicKey)
+    })
+  }
 
   const render = () => {
     switch (page) {
@@ -69,6 +89,11 @@ const GreetingComponent = () => {
 
   return (
     <div id="App">
+      {
+        !isLockWallet &&
+        isLogin &&
+        <NavComponent/>
+      }
       <div className={classes.appRoot}>{render()}</div>
     </div>
   )

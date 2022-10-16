@@ -3,7 +3,7 @@ import {Network, Page} from "../enum/enum";
 
 export const recoilPageState = atom({
   key: 'pageState',
-  default: Page.START,
+  default: Page.ACCOUNT,
 })
 
 export const recoilNetWork = atom({
