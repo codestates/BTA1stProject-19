@@ -12,7 +12,7 @@ import {
   Typography
 } from "@material-ui/core";
 import {Page} from "../enum/enum";
-import {StoreAccountInfo} from "../api/account";
+import {StoreAccountInfo, UnlockWallet} from "../api/account";
 
 const RecoverAccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -89,6 +89,7 @@ const RecoverAccountComponent = () => {
     const mnemonicString = typedMnemonics.join(' ')
     StoreAccountInfo(mnemonicString, password)
       .then(() => {
+        UnlockWallet()
         setPage(Page.ACCOUNT)
       })
   }
@@ -97,7 +98,6 @@ const RecoverAccountComponent = () => {
     const newTypedMnemonic = [...typedMnemonics]
     newTypedMnemonic[index] = value
     setTypedMnemonics(newTypedMnemonic)
-    console.log(newTypedMnemonic)
   }
 
   const handleStepMnemonic = () => {
