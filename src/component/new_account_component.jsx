@@ -20,7 +20,7 @@ const NewAccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
   const [password, setPassword] = useState('')
   const [step, setStep] = useState(0)
-  const [completePassword, setCompeitePassword] = useState(false)
+  const [completePassword, setCompletePassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [mnemonics, setMnemonics] = useState([])
   const [typedMnemonics, setTypedMnemonics] = useState([])
@@ -30,13 +30,13 @@ const NewAccountComponent = () => {
   const handleChangePassword = (e) => {
     setPassword(e.target.value)
     const validateResult = validatePassword(password, )
-    setCompeitePassword(validateResult)
+    setCompletePassword(validateResult)
   }
 
   const handleChangeConfirmPassword = e => {
     const confirmPassword = e.target.value
     const validateResult = validatePassword(password, confirmPassword)
-    setCompeitePassword(validateResult)
+    setCompletePassword(validateResult)
   }
 
   const validatePassword = (password, confirmPassword) => {
