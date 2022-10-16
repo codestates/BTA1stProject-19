@@ -4,6 +4,7 @@ body {
     height: 600px;
 }
 #app-container{
-    height: 100%;
-    overflow: scroll;
+    padding: 20px;
+    height: calc(100% - 40px);
+    overflow: auto;
 }

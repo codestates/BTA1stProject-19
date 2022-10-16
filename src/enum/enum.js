@@ -5,6 +5,7 @@ export const Page = {
   TRANSFER: 'transfer',
   NEW_ACCOUNT: 'new_account',
   RECOVER_ACCOUNT: 'recover_account',
+  SETTING: 'setting',
 }
 
 export const Network = {

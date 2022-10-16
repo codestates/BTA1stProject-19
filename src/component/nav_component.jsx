@@ -153,7 +153,7 @@ const NavComponent = () => {
           <ListItem
             button
             key="setting"
-            onClick={() => goToPage(Page.TRANSFER)}
+            onClick={() => goToPage(Page.SETTING)}
           >
             <ListItemText primary={'설정'} />
           </ListItem>

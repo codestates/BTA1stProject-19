@@ -58,8 +58,8 @@ const RecoverAccountComponent = () => {
       textAlign: 'left',
     },
     button: {
-      width: "45%",
-      margin: '8px'
+      flex: 1,
+      margin: '3px'
     },
     mnemonicGrid: {
       margin: '10px -12px 20px',
@@ -74,6 +74,10 @@ const RecoverAccountComponent = () => {
     },
     margin: {
       marginTop: '8px'
+    },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between'
     }
   }))();
 
@@ -108,11 +112,11 @@ const RecoverAccountComponent = () => {
           <Box className={classes.passwordContainer}>
             <Box>
               <Typography variant={'h6'}>
-                비밀 번호 초기화
+                비밀번호 초기화
               </Typography>
               <Typography variant={'subtitle1'}>
-                기존 비밀 번호는 초기화 됩니다.<br/>
-                새로운 비밀 번호를 입력해주세요.
+                기존 비밀번호는 초기화 됩니다.<br/>
+                새로운 비밀번호를 입력해주세요.
               </Typography>
             </Box>
             <Box className={classes.inputContainer}>
@@ -185,7 +189,7 @@ const RecoverAccountComponent = () => {
                   })}
               </Grid>
             </Box>
-            <Box>
+            <Box className={classes.buttonContainer}>
               <Button
                 className={classes.button}
                 variant="outlined"
