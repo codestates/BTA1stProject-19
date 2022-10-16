@@ -19,6 +19,17 @@ const AccountComponent = () => {
     init()
   }, [])
 
+  const getBalance = async () => {
+    const connection = new Connection(netWork.RPC)
+    chrome.storage.local.get('publicKey', async result => {
+      const tempPublicKey = result.publicKey
+      setPublicKey(tempPublicKey)
+      const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
+      const tempBalance = await connection.getBalance(publicKeyObj)
+      setBalance(tempBalance)
+    })
+  }
+  
   const init = () => {
     // 지갑이 락 상태인경우
     chrome.storage.local.get('lock', result => {
