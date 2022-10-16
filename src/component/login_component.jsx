@@ -14,7 +14,7 @@ import logo from '../img/velas-logo.png'
 import { Page } from '../enum/enum'
 import { IsSecretKeyValid } from '../api/keyPair'
 import * as crypto from 'crypto-js'
-import {UnlockWallet} from "../api/account";
+import { UnlockWallet } from '../api/account'
 
 const LoginComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -28,11 +28,17 @@ const LoginComponent = () => {
     setPassword(e.target.value)
   }
 
+  const handleOnKeyDown = e => {
+    if (e.keyCode === 13) {
+      handleLogin()
+    }
+  }
+
   const handleLogin = () => {
     const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
     chrome.storage.local.get('password', result => {
       const storagePassword = result.password
-      if(!storagePassword) {
+      if (!storagePassword) {
         alert('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
         return
       }
@@ -88,13 +94,17 @@ const LoginComponent = () => {
   return (
     <div>
       <Container className={classes.container}>
-        <img className={classes.logoImage} src="https://velas.com/assets/img/logo-footer.svg"/>
+        <img
+          className={classes.logoImage}
+          src="https://velas.com/assets/img/logo-footer.svg"
+        />
         <Box className={classes.inputContainer}>
           <TextField
             type="password"
             label="password"
             placeholder="password"
             onChange={handleChange}
+            onKeyDown={handleOnKeyDown}
           />
         </Box>
         <Box className={classes.buttonContainer}>

@@ -2,7 +2,7 @@ import { Keypair } from '@velas/web3'
 import * as bip39 from 'bip39'
 import * as bs58 from 'bs58'
 
-export const CreateAccountByMnemonic = async (mnemonic) => {
+export const CreateAccountByMnemonic = async mnemonic => {
   try {
     const seed = bip39.mnemonicToSeedSync(mnemonic)
     const keypair = Keypair.fromSeed(seed.slice(0, 32))
