@@ -14,6 +14,7 @@ import logo from '../img/velas-logo.png'
 import { Page } from '../enum/enum'
 import { IsSecretKeyValid } from '../api/keyPair'
 import * as crypto from 'crypto-js'
+import {UnlockWallet} from "../api/account";
 
 const LoginComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -31,19 +32,27 @@ const LoginComponent = () => {
     const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
     chrome.storage.local.get('password', result => {
       const storagePassword = result.password
+      if(!storagePassword) {
+        alert('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
+        return
+      }
+
       if (encPassword === storagePassword) {
         chrome.storage.local.get('secretKey', result => {
           const encSecretKey = result.secretKey
           const decSecretKey = crypto.AES.decrypt(encSecretKey, encPassword)
           const originalSecretKey = decSecretKey.toString(crypto.enc.Utf8)
           if (IsSecretKeyValid(originalSecretKey)) {
+            UnlockWallet()
             setPage(Page.ACCOUNT)
           } else {
             alert('계정이 존재하지 않습니다.')
+            return
           }
         })
       } else {
         alert('패스워드가 일치하지 않습니다')
+        return
       }
     })
   }
@@ -54,8 +63,8 @@ const LoginComponent = () => {
       marginTop: '100px',
     },
     logoImage: {
-      width: '60px',
-      height: '56px',
+      width: '100px',
+      height: '96px',
     },
     inputContainer: {
       padding: '30px 0 10px',
@@ -79,13 +88,12 @@ const LoginComponent = () => {
   return (
     <div>
       <Container className={classes.container}>
-        <img className={classes.logoImage} src={logo} alt="velas" />
+        <img className={classes.logoImage} src="https://velas.com/assets/img/logo-footer.svg"/>
         <Box className={classes.inputContainer}>
           <TextField
             type="password"
             label="password"
             placeholder="password"
-            multiline
             onChange={handleChange}
           />
         </Box>
@@ -113,7 +121,7 @@ const LoginComponent = () => {
             </Button>
             <Button
               onClick={() => {
-                goToPage(Page.RESTORE_ACCOUNT)
+                goToPage(Page.RECOVER_ACCOUNT)
               }}
               className={classes.textButton}
             >

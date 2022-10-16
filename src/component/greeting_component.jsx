@@ -3,23 +3,43 @@ import { useRecoilState } from 'recoil'
 import icon from '../img/icon-128.png'
 import { hot } from 'react-hot-loader'
 import TestButton from './button_component'
-import { recoilPageState, recoilNetWork } from '../states/recoilPageState'
+import { recoilPageState } from '../states/recoilPageState'
 import { Page } from '../enum/enum'
 import { makeStyles } from '@material-ui/core'
 import Login from './login_component'
 import NewAccount from './new_account_component'
-import RestoreAccount from './restore_account_component'
+import RestoreAccount from './recover_account_component'
 import Account from './account_component'
 import Transfer from './transfer_component'
-import * as crypto from 'crypto-js'
+import NavComponent from "./nav_component";
+import Setting from "./setting_component";
 
 const GreetingComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
+  const [isLockWallet, setIsLockWallet] = useState(false)
+  const [isLogin, setIsLogin] = useState(false)
   const classes = makeStyles(() => ({
     appRoot: {
       paddingTop: '56px',
     },
   }))()
+
+  useEffect(() => {
+    init()
+  }, [page])
+
+  const init = () => {
+    // 지갑이 락 상태인경우
+    chrome.storage.local.get('lock', result => {
+      const lockStatus = result.lock
+      setIsLockWallet(!!lockStatus)
+    })
+    //로그인 상태가 아닌 경우
+    chrome.storage.local.get('publicKey', result => {
+      const publicKey = result.publicKey
+      setIsLogin(!!publicKey)
+    })
+  }
 
   const render = () => {
     switch (page) {
@@ -49,7 +69,7 @@ const GreetingComponent = () => {
             <NewAccount />
           </div>
         )
-      case Page.RESTORE_ACCOUNT:
+      case Page.RECOVER_ACCOUNT:
         return (
           <div>
             <RestoreAccount />
@@ -61,7 +81,12 @@ const GreetingComponent = () => {
             <Transfer />
           </div>
         )
-
+      case Page.SETTING:
+        return (
+          <div>
+            <Setting/>
+          </div>
+        )
       default:
         return null
     }
@@ -69,6 +94,11 @@ const GreetingComponent = () => {
 
   return (
     <div id="App">
+      {
+        !isLockWallet &&
+        isLogin &&
+        <NavComponent/>
+      }
       <div className={classes.appRoot}>{render()}</div>
     </div>
   )

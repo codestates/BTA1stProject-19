@@ -16,6 +16,7 @@ import { useRecoilState } from 'recoil'
 import { recoilPageState } from '../states/recoilPageState'
 import { Page } from '../enum/enum'
 import clsx from 'clsx'
+import {LockWallet} from "../api/account";
 
 const NavComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -95,6 +96,11 @@ const NavComponent = () => {
     setOpen(false)
   }
 
+  const handleClickLock = () => {
+    LockWallet()
+    setPage(Page.LOGIN)
+  }
+
   return (
     <div>
       <AppBar
@@ -143,6 +149,20 @@ const NavComponent = () => {
             onClick={() => goToPage(Page.TRANSFER)}
           >
             <ListItemText primary={'송금'} />
+          </ListItem>
+          <ListItem
+            button
+            key="setting"
+            onClick={() => goToPage(Page.SETTING)}
+          >
+            <ListItemText primary={'설정'} />
+          </ListItem>
+          <ListItem
+            button
+            key="lock"
+            onClick={handleClickLock}
+          >
+            <ListItemText primary={'잠금'} />
           </ListItem>
         </List>
       </Drawer>
