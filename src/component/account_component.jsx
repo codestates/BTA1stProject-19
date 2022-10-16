@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
 import {recoilNetWork, recoilPageState} from '../states/recoilPageState'
 import { Button } from '@material-ui/core'
-import { Connection } from '@velas/web3'
+import {Connection, LAMPORTS_PER_SOL} from '@velas/web3'
 import { makeStyles } from '@material-ui/core/styles'
 import copy from 'copy-to-clipboard'
 import * as velasWeb3 from '@velas/web3'
@@ -44,6 +44,7 @@ const AccountComponent = () => {
 
   const getBalance = () => {
      const connection = new Connection(netWork.RPC)
+     console.log(`${netWork.RPC}`)
      chrome.storage.local.get('publicKey', async result => {
        try {
          const tempPublicKey = result.publicKey
@@ -52,7 +53,7 @@ const AccountComponent = () => {
          setPublicKey(tempPublicKey)
          const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
          const tempBalance = await connection.getBalance(publicKeyObj)
-         setBalance(tempBalance)
+         setBalance(tempBalance / LAMPORTS_PER_SOL)
        } catch (e) {
          console.log(e)
          // 퍼블릭 키를 가져오지 못하는 경우 로그인으로 이동
