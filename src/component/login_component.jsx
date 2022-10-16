@@ -56,8 +56,8 @@ const LoginComponent = () => {
       marginTop: '100px',
     },
     logoImage: {
-      width: '60px',
-      height: '56px',
+      width: '100px',
+      height: '96px',
     },
     inputContainer: {
       padding: '30px 0 10px',
@@ -81,7 +81,7 @@ const LoginComponent = () => {
   return (
     <div>
       <Container className={classes.container}>
-        <img className={classes.logoImage} src={logo} alt="velas" />
+        <img className={classes.logoImage} src="https://velas.com/assets/img/logo-footer.svg"/>
         <Box className={classes.inputContainer}>
           <TextField
             type="password"
