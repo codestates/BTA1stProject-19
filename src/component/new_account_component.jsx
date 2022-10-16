@@ -11,33 +11,47 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { CreateAccountByMnemonic, CreateMnemonic } from '../api/keyPair'
-import * as crypto from 'crypto-js'
+import {CreateMnemonic } from '../api/keyPair'
+import {scrollToTop} from "../common/scroll";
+import {StoreAccountInfo,} from "../api/account";
+import {Page} from "../enum/enum";
 
 const NewAccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
   const [password, setPassword] = useState('')
   const [step, setStep] = useState(0)
+  const [completePassword, setCompeitePassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [mnemonics, setMnemonics] = useState([])
   const [typedMnemonics, setTypedMnemonics] = useState([])
   const [confirmMnemonics, setConfirmMnemonics] = useState([])
   const [completeMnemonic, setCompleteMnemonic] = useState(false)
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-  }
-
-  const handleChangePassword = e => {
+  const handleChangePassword = (e) => {
     setPassword(e.target.value)
+    const validateResult = validatePassword(password, )
+    setCompeitePassword(validateResult)
   }
 
-  const handleChangeConfirm = e => {
+  const handleChangeConfirmPassword = e => {
     const confirmPassword = e.target.value
-    setErrorMessage(confirmPassword !== password ? '비밀번호가 다릅니다.' : '')
+    const validateResult = validatePassword(password, confirmPassword)
+    setCompeitePassword(validateResult)
+  }
+
+  const validatePassword = (password, confirmPassword) => {
+    if (password.length < 8) {
+      setErrorMessage('비밀번호는 8자 이상 입력해주세요.')
+      return false
+    }
+
+    if (confirmPassword !== password) {
+      setErrorMessage('비밀번호가 다릅니다.')
+      return false
+    }
+
+    setErrorMessage('')
+    return true
   }
 
   const handleStepMnemonic = () => {
@@ -71,20 +85,11 @@ const NewAccountComponent = () => {
   }
 
   const handleCompleteAll = () => {
-    try {
-      const { publicKey, secretKey } = CreateAccountByMnemonic(
-        mnemonics.join(' '),
-        password,
-      )
-      const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
-      const encSecretKey = crypto.AES.encrypt(secretKey, encPassword).toString()
-      chrome.storage.local.set({ publicKey: publicKey })
-      chrome.storage.local.set({ mnemonics: mnemonics.join(' ') })
-      chrome.storage.local.set({ password: encPassword })
-      chrome.storage.local.set({ secretKey: encSecretKey })
-    } catch (e) {
-      console.log(e)
-    }
+    const mnemonicString = mnemonics.join(' ')
+    StoreAccountInfo(mnemonicString, password)
+      .then(() => {
+        setPage(Page.ACCOUNT)
+      })
   }
 
   const classes = makeStyles(() => ({
@@ -128,7 +133,6 @@ const NewAccountComponent = () => {
                 required
                 label="password"
                 placeholder="password"
-                multiline
                 onChange={handleChangePassword}
               />
               <Box />
@@ -138,8 +142,7 @@ const NewAccountComponent = () => {
                 error={errorMessage.length > 0}
                 label="confirm password"
                 placeholder="confirm password"
-                multiline
-                onChange={handleChangeConfirm}
+                onChange={handleChangeConfirmPassword}
                 helperText={errorMessage}
               />
             </Box>
@@ -149,6 +152,7 @@ const NewAccountComponent = () => {
                 color="primary"
                 onClick={handleStepMnemonic}
                 fullWidth={true}
+                disabled={!completePassword}
               >
                 확인
               </Button>

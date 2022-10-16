@@ -85,7 +85,6 @@ const LoginComponent = () => {
             type="password"
             label="password"
             placeholder="password"
-            multiline
             onChange={handleChange}
           />
         </Box>
