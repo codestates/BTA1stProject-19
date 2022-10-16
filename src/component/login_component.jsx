@@ -32,6 +32,11 @@ const LoginComponent = () => {
     const encPassword = crypto.SHA256(password).toString(crypto.enc.Hex)
     chrome.storage.local.get('password', result => {
       const storagePassword = result.password
+      if(!storagePassword) {
+        alert('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
+        return
+      }
+
       if (encPassword === storagePassword) {
         chrome.storage.local.get('secretKey', result => {
           const encSecretKey = result.secretKey
@@ -42,10 +47,12 @@ const LoginComponent = () => {
             setPage(Page.ACCOUNT)
           } else {
             alert('계정이 존재하지 않습니다.')
+            return
           }
         })
       } else {
         alert('패스워드가 일치하지 않습니다')
+        return
       }
     })
   }
@@ -114,7 +121,7 @@ const LoginComponent = () => {
             </Button>
             <Button
               onClick={() => {
-                goToPage(Page.RESTORE_ACCOUNT)
+                goToPage(Page.RECOVER_ACCOUNT)
               }}
               className={classes.textButton}
             >

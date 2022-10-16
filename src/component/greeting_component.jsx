@@ -11,8 +11,8 @@ import NewAccount from './new_account_component'
 import RestoreAccount from './recover_account_component'
 import Account from './account_component'
 import Transfer from './transfer_component'
-import * as crypto from 'crypto-js'
 import NavComponent from "./nav_component";
+import Setting from "./setting_component";
 
 const GreetingComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -69,7 +69,7 @@ const GreetingComponent = () => {
             <NewAccount />
           </div>
         )
-      case Page.RESTORE_ACCOUNT:
+      case Page.RECOVER_ACCOUNT:
         return (
           <div>
             <RestoreAccount />
@@ -81,7 +81,12 @@ const GreetingComponent = () => {
             <Transfer />
           </div>
         )
-
+      case Page.SETTING:
+        return (
+          <div>
+            <Setting/>
+          </div>
+        )
       default:
         return null
     }

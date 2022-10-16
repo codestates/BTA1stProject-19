@@ -104,7 +104,7 @@ const NewAccountComponent = () => {
       margin: '100px auto 0',
     },
     mnemonicContainer: {
-      margin: '20px auto',
+      paddingBottom: '20px',
     },
     mnemonicNotice: {
       textAlign: 'left',
@@ -113,9 +113,13 @@ const NewAccountComponent = () => {
       margin: '10px -12px 20px',
     },
     button: {
-      width: '45%',
-      margin: '8px',
+      flex: 1,
+      margin: '3px'
     },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    }
   }))()
   return (
     <div>
@@ -124,7 +128,7 @@ const NewAccountComponent = () => {
           <Box className={classes.passwordContainer}>
             <Box>
               <Typography variant={'subtitle1'}>
-                비밀 번호를 입력해주세요.
+                비밀번호를 입력해주세요.
               </Typography>
             </Box>
             <Box className={classes.inputContainer}>
@@ -167,7 +171,8 @@ const NewAccountComponent = () => {
               </Typography>
               <Typography variant="subtitle2" gutterBottom>
                 비밀 백업 구문을 이용하면 계정을 쉽게 백업하고 복구할 수
-                있습니다.
+                있습니다. 다른 기기에서 지갑을 불러오거나 초기화된 이후
+                비밀 복구 구문을 이용해야합니다.
                 <br />이 구문을 기억하세요.
               </Typography>
               <Typography
@@ -176,7 +181,8 @@ const NewAccountComponent = () => {
                 color="error"
                 gutterBottom
               >
-                경고: 비밀 복구 구문은 절대로 공개하지 마세요.
+                경고: 비밀 복구 구문은 절대로 공개하지 마세요. <br/>
+                비밀 복구 구문을 잊어버린 경우 다시 복원 할 수 없습니다.
               </Typography>
             </Box>
             <Grid container spacing={3} className={classes.mnemonicGrid}>
@@ -230,22 +236,24 @@ const NewAccountComponent = () => {
                   )
                 })}
             </Grid>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              onClick={handleStepMnemonic}
-            >
-              다시보기
-            </Button>
-            <Button
-              className={classes.button}
-              disabled={!completeMnemonic}
-              variant="contained"
-              color="primary"
-              onClick={handleCompleteAll}
-            >
-              확인
-            </Button>
+            <Box className={classes.buttonContainer}>
+              <Button
+                className={classes.button}
+                variant="outlined"
+                onClick={handleStepMnemonic}
+              >
+                다시보기
+              </Button>
+              <Button
+                className={classes.button}
+                disabled={!completeMnemonic}
+                variant="contained"
+                color="primary"
+                onClick={handleCompleteAll}
+              >
+                확인
+              </Button>
+            </Box>
           </Box>
         )}
       </Container>
