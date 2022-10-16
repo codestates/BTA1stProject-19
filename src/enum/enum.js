@@ -4,7 +4,7 @@ export const Page = {
   ACCOUNT: 'account',
   TRANSFER: 'transfer',
   NEW_ACCOUNT: 'new_account',
-  RESTORE_ACCOUNT: 'restore_account',
+  RECOVER_ACCOUNT: 'recover_account',
 }
 
 export const Network = {

@@ -114,7 +114,7 @@ const LoginComponent = () => {
             </Button>
             <Button
               onClick={() => {
-                goToPage(Page.RESTORE_ACCOUNT)
+                goToPage(Page.RECOVER_ACCOUNT)
               }}
               className={classes.textButton}
             >

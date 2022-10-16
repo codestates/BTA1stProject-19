@@ -69,7 +69,7 @@ const GreetingComponent = () => {
             <NewAccount />
           </div>
         )
-      case Page.RESTORE_ACCOUNT:
+      case Page.RECOVER_ACCOUNT:
         return (
           <div>
             <RestoreAccount />
