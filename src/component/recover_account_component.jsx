@@ -53,6 +53,7 @@ const RecoverAccountComponent = () => {
     container: {
       textAlign: 'center',
       marginTop: '20px',
+      paddingBottom: '16px',
     },
     mnemonicNotice: {
       textAlign: 'left',

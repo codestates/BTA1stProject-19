@@ -52,10 +52,10 @@ export const StoreAccountInfo = async (mnemonic, password) => {
   }
 }
 
-export const IsLockWallet = () => {
-  chrome.storage.local.get('password', result => {
-    const storagePassword = result.password
-    if (storagePassword) return true
-    else false
-  })
+export const LockWallet = () => {
+  chrome.storage.local.set({lock : true})
+}
+
+export const UnlockWallet = () => {
+  chrome.storage.local.remove('lock')
 }
