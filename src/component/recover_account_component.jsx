@@ -52,7 +52,6 @@ const RecoverAccountComponent = () => {
   const classes = makeStyles(() => ({
     container: {
       textAlign: 'center',
-      marginTop: '20px',
       paddingBottom: '16px',
     },
     mnemonicNotice: {
@@ -143,6 +142,15 @@ const RecoverAccountComponent = () => {
                 disabled={!completePassword}
               >
                 확인
+              </Button>
+              <Box className={classes.margin} />
+              <Button
+                variant="contained"
+                color='default'
+                onClick={handleGoToLogin}
+                fullWidth={true}
+              >
+                뒤로 가기
               </Button>
             </Box>
           </Box>
