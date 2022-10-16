@@ -9,6 +9,7 @@ import { IsSecretKeyValid } from '../api/keyPair'
 import * as bs58 from 'bs58'
 import * as crypto from 'crypto-js'
 import TransactionResultModal from './transaction_result_modal_component'
+import ModalComponent from './modal_component'
 
 const TransferComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -18,7 +19,10 @@ const TransferComponent = () => {
   const [targetAddress, setTargetAddress] = useState('')
   const [amount, setAmount] = useState(0)
   const [password, setPassword] = useState('')
-  const [open, setOpen] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertContent, setAlertContent] = useState('')
+  const [transactionModalOpen, setTransactionModalOpen] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
   const [txStatus, setTxStatus] = useState(true)
 
@@ -66,7 +70,10 @@ const TransferComponent = () => {
       chrome.storage.local.get('password', async result => {
         const storagePassword = result.password
         if (!storagePassword) {
-          alert('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
+          handleAlertOpen(
+            '지갑 오류',
+            '지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.',
+          )
           return
         }
 
@@ -100,25 +107,25 @@ const TransferComponent = () => {
                   )
 
                 setTransactionHash(transferSignature)
-                setOpen(true)
+                setTransactionModalOpen(true)
                 setTxStatus(true)
               } catch (e) {
                 console.log(e)
-                setOpen(true)
+                setTransactionModalOpen(true)
                 setTxStatus(false)
               }
             } else {
-              alert('계정이 존재하지 않습니다.')
+              handleAlertOpen('계정 오류', '계정이 존재하지 않습니다.')
               return
             }
           })
         } else {
-          alert('패스워드가 일치하지 않습니다')
+          handleAlertOpen('비밀번호 오류', '패스워드가 일치하지 않습니다')
           return
         }
       })
     } else {
-      alert('송금 주소를 확인해주세요.')
+      handleAlertOpen('주소 오류', '송금 주소를 확인해주세요.')
     }
   }
 
@@ -134,9 +141,19 @@ const TransferComponent = () => {
     return true
   }
 
-  const handleClose = () => {
-    setOpen(!open)
+  const handleTransactionMoalClose = () => {
+    setTransactionModalOpen(!transactionModalOpen)
     setPage(Page.ACCOUNT)
+  }
+
+  const handleAlertOpen = (title, content) => {
+    setAlertTitle(title)
+    setAlertContent(content)
+    setAlertOpen(true)
+  }
+
+  const handleAlertClose = () => {
+    setAlertOpen(false)
   }
 
   const classes = makeStyles(() => ({
@@ -162,9 +179,15 @@ const TransferComponent = () => {
   return (
     <div>
       <Container className={classes.container}>
+        <ModalComponent
+          open={alertOpen}
+          handleClose={handleAlertClose}
+          message={alertContent}
+          title={alertTitle}
+        />
         <TransactionResultModal
-          open={open}
-          handleClose={handleClose}
+          open={transactionModalOpen}
+          handleClose={handleTransactionMoalClose}
           status={txStatus}
           transactionHash={transactionHash}
         />

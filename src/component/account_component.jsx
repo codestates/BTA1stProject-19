@@ -8,6 +8,7 @@ import copy from 'copy-to-clipboard'
 import * as velasWeb3 from '@velas/web3'
 import { Page } from '../enum/enum'
 import CopyIcon from '../img/copy-icon.svg'
+import ReloadIcon from '../img/reload-icon.svg'
 
 const AccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -54,12 +55,11 @@ const AccountComponent = () => {
 
   const copyPublicKey = () => {
     copy(publicKey)
-    alert('Copied')
   }
 
   const classes = makeStyles(() => ({
     container: {
-      marginTop: 40,
+      marginTop: 60,
     },
     textAlignCenter: {
       textAlign: 'center',
@@ -79,6 +79,14 @@ const AccountComponent = () => {
       height: 20,
       marginLeft: 5,
     },
+    reloadIcon: {
+      width: 30,
+      height: 30,
+      marginLeft: 15,
+    },
+    balanceDiv: {
+      textAlign: 'center',
+    },
   }))()
 
   return (
@@ -94,8 +102,11 @@ const AccountComponent = () => {
       <div className={classes.velasDiv}>
         <img src="https://velas.com/assets/img/logo-footer.svg"></img>
       </div>
-      <div className={classes.textAlignCenter}>
-        <h1>{balance / velasWeb3.LAMPORTS_PER_SOL} VLX</h1>
+      <div className={classes.balanceDiv}>
+        <Button onClick={getAccountBalance}>
+          <h1>{balance / velasWeb3.LAMPORTS_PER_SOL} VLX</h1>
+          <img src={ReloadIcon} className={classes.reloadIcon} />
+        </Button>
       </div>
     </div>
   )
