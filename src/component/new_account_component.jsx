@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import {CreateMnemonic } from '../api/keyPair'
 import {scrollToTop} from "../common/scroll";
-import {StoreAccountInfo,} from "../api/account";
+import {StoreAccountInfo, UnlockWallet,} from "../api/account";
 import {Page} from "../enum/enum";
 
 const NewAccountComponent = () => {
@@ -88,6 +88,7 @@ const NewAccountComponent = () => {
     const mnemonicString = mnemonics.join(' ')
     StoreAccountInfo(mnemonicString, password)
       .then(() => {
+        UnlockWallet()
         setPage(Page.ACCOUNT)
       })
   }
