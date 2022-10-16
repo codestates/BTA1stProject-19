@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core'
 import { Connection } from '@velas/web3'
 import { makeStyles } from '@material-ui/core/styles'
 import copy from 'copy-to-clipboard'
+import * as velasWeb3 from '@velas/web3'
 
 const AccountComponent = () => {
   const [netWork, setNetwork] = useRecoilState(recoilNetWork)
@@ -21,7 +22,8 @@ const AccountComponent = () => {
     chrome.storage.local.get('publicKey', async result => {
       const tempPublicKey = result.publicKey
       setPublicKey(tempPublicKey)
-      const tempBalance = await connection.getBalance(publicKey)
+      const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
+      const tempBalance = await connection.getBalance(publicKeyObj)
       setBalance(tempBalance)
     })
   }

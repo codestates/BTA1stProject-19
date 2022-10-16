@@ -14,6 +14,7 @@ import Transfer from './transfer_component'
 import * as crypto from 'crypto-js'
 
 const GreetingComponent = () => {
+  const [page, setPage] = useRecoilState(recoilPageState)
   const classes = makeStyles(() => ({
     appRoot: {
       paddingTop: '56px',
