@@ -3,17 +3,12 @@ import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
 import { recoilPageState, recoilNetWork } from '../states/recoilPageState'
 import { Page } from '../enum/enum'
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Container,
-  makeStyles,
-  TextField,
-} from '@material-ui/core'
+import { Button, Container, makeStyles, TextField } from '@material-ui/core'
 import * as velasWeb3 from '@velas/web3'
 import { IsSecretKeyValid } from '../api/keyPair'
 import * as bs58 from 'bs58'
+import * as crypto from 'crypto-js'
+import TransactionResultModal from './transaction_result_modal_component'
 
 const TransferComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -23,6 +18,9 @@ const TransferComponent = () => {
   const [targetAddress, setTargetAddress] = useState('')
   const [amount, setAmount] = useState(0)
   const [password, setPassword] = useState('')
+  const [open, setOpen] = useState(false)
+  const [transactionHash, setTransactionHash] = useState('')
+  const [txStatus, setTxStatus] = useState(true)
 
   useEffect(() => {
     getAccountBalance()
@@ -82,22 +80,33 @@ const TransferComponent = () => {
             )
 
             if (IsSecretKeyValid(originalSecretKey)) {
-              const fromPublicKey = new velasWeb3.PublicKey(publicKey)
-              const toPubKey = new velasWeb3.PublicKey(targetAddress)
-              let transaction = new velasWeb3.Transaction().add(
-                velasWeb3.SystemProgram.transfer({
-                  fromPubkey: fromPublicKey,
-                  toPubkey: toPubKey,
-                  lamports: amount * velasWeb3.LAMPORTS_PER_SOL,
-                }),
-              )
-              transaction.feePayer = fromPublicKey
-              const connection = new velasWeb3.Connection(netWork.RPC)
-              await velasWeb3.sendAndConfirmTransaction(
-                connection,
-                transaction,
-                [sender],
-              )
+              try {
+                const fromPublicKey = new velasWeb3.PublicKey(publicKey)
+                const toPubKey = new velasWeb3.PublicKey(targetAddress)
+                let transaction = new velasWeb3.Transaction().add(
+                  velasWeb3.SystemProgram.transfer({
+                    fromPubkey: fromPublicKey,
+                    toPubkey: toPubKey,
+                    lamports: amount * velasWeb3.LAMPORTS_PER_SOL,
+                  }),
+                )
+                transaction.feePayer = fromPublicKey
+                const connection = new velasWeb3.Connection(netWork.RPC)
+                const transferSignature =
+                  await velasWeb3.sendAndConfirmTransaction(
+                    connection,
+                    transaction,
+                    [sender],
+                  )
+
+                setTransactionHash(transferSignature)
+                setOpen(true)
+                setTxStatus(true)
+              } catch (e) {
+                console.log(e)
+                setOpen(true)
+                setTxStatus(false)
+              }
             } else {
               alert('계정이 존재하지 않습니다.')
               return
@@ -125,10 +134,15 @@ const TransferComponent = () => {
     return true
   }
 
+  const handleClose = () => {
+    setOpen(!open)
+    setPage(Page.ACCOUNT)
+  }
+
   const classes = makeStyles(() => ({
     container: {
       textAlign: 'center',
-      marginTop: '25px',
+      marginTop: '15px',
     },
     transferButton: {
       marginTop: '30px',
@@ -140,19 +154,27 @@ const TransferComponent = () => {
       fontSize: '15px',
       marginLeft: '5px',
     },
+    currentAmountDiv: {
+      marginBottom: '30px',
+    },
   }))()
 
   return (
     <div>
       <Container className={classes.container}>
-        <div>
+        <TransactionResultModal
+          open={open}
+          handleClose={handleClose}
+          status={txStatus}
+          transactionHash={transactionHash}
+        />
+        <div className={classes.currentAmountDiv}>
           <h2>현재 자산 </h2>
           <span className={classes.amount}>
             {balance / velasWeb3.LAMPORTS_PER_SOL}
             <span className={classes.vlx}>VLX</span>
           </span>
         </div>
-
         <h2>송금 주소</h2>
         <TextField
           id="target-address"
@@ -174,6 +196,7 @@ const TransferComponent = () => {
           label="password"
           value={password}
           onChange={onChangePassword}
+          type="password"
         />
         <Button
           className={classes.transferButton}

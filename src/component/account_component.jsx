@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import copy from 'copy-to-clipboard'
 import * as velasWeb3 from '@velas/web3'
 import { Page } from '../enum/enum'
+import CopyIcon from '../img/copy-icon.svg'
 
 const AccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -58,7 +59,7 @@ const AccountComponent = () => {
 
   const classes = makeStyles(() => ({
     container: {
-      marginTop: 15,
+      marginTop: 40,
     },
     textAlignCenter: {
       textAlign: 'center',
@@ -66,21 +67,28 @@ const AccountComponent = () => {
     accountDiv: {},
     account: {
       fontSize: 20,
+      marginBottom: 10,
     },
     velasDiv: {
       textAlign: 'center',
       marginTop: 30,
       marginBottom: 30,
     },
+    copyIcon: {
+      width: 20,
+      height: 20,
+      marginLeft: 5,
+    },
   }))()
 
   return (
     <div className={classes.container}>
       <div className={classes.textAlignCenter}>
-        <div className={classes.account}>내 계정</div>
+        <div className={classes.account}>My Account</div>
         <Button onClick={copyPublicKey}>
           {publicKey.substring(0, 5)}...
           {publicKey.substring(publicKey.length - 5)}
+          <img src={CopyIcon} className={classes.copyIcon} />
         </Button>
       </div>
       <div className={classes.velasDiv}>
