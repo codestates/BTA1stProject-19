@@ -1,5 +1,5 @@
-import * as crypto from "crypto-js";
-import {CreateAccountByMnemonic} from "./keyPair";
+import * as crypto from 'crypto-js'
+import { CreateAccountByMnemonic } from './keyPair'
 
 export const StorePublicKey = publicKey => {
   try {
@@ -17,16 +17,19 @@ export const StorePassword = encPassword => {
   }
 }
 
-export const StoreMnemonics = ( mnemonics, encPassword ) => {
+export const StoreMnemonics = (mnemonics, encPassword) => {
   try {
-    const encryptMnemonics = crypto.AES.encrypt(mnemonics, encPassword).toString()
+    const encryptMnemonics = crypto.AES.encrypt(
+      mnemonics,
+      encPassword,
+    ).toString()
     chrome.storage.local.set({ mnemonics: encryptMnemonics })
   } catch (e) {
     console.log(e)
   }
 }
 
-export const StoreSecretKey = ( secretKey, encPassword ) => {
+export const StoreSecretKey = (secretKey, encPassword) => {
   try {
     const encSecretKey = crypto.AES.encrypt(secretKey, encPassword).toString()
     chrome.storage.local.set({ secretKey: encSecretKey })
@@ -36,7 +39,7 @@ export const StoreSecretKey = ( secretKey, encPassword ) => {
 }
 
 export const EncryptPassword = password => {
-  return  crypto.SHA256(password).toString(crypto.enc.Hex)
+  return crypto.SHA256(password).toString(crypto.enc.Hex)
 }
 
 export const StoreAccountInfo = async (mnemonic, password) => {
@@ -53,7 +56,7 @@ export const StoreAccountInfo = async (mnemonic, password) => {
 }
 
 export const LockWallet = () => {
-  chrome.storage.local.set({lock : true})
+  chrome.storage.local.set({ lock: true })
 }
 
 export const UnlockWallet = () => {

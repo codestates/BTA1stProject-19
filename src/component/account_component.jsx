@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { hot } from 'react-hot-loader'
-import {recoilNetWork, recoilPageState} from '../states/recoilPageState'
+import { recoilNetWork, recoilPageState } from '../states/recoilPageState'
 import { Button } from '@material-ui/core'
-import { Connection } from '@velas/web3'
 import { makeStyles } from '@material-ui/core/styles'
 import copy from 'copy-to-clipboard'
 import * as velasWeb3 from '@velas/web3'
-import {Page} from "../enum/enum";
+import { Page } from '../enum/enum'
 
 const AccountComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
@@ -19,17 +18,6 @@ const AccountComponent = () => {
     init()
   }, [])
 
-  const getBalance = async () => {
-    const connection = new Connection(netWork.RPC)
-    chrome.storage.local.get('publicKey', async result => {
-      const tempPublicKey = result.publicKey
-      setPublicKey(tempPublicKey)
-      const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
-      const tempBalance = await connection.getBalance(publicKeyObj)
-      setBalance(tempBalance)
-    })
-  }
-  
   const init = () => {
     // 지갑이 락 상태인경우
     chrome.storage.local.get('lock', result => {
@@ -38,29 +26,29 @@ const AccountComponent = () => {
         setPage(Page.LOGIN)
       }
       //밸런스 체크 시 에러가 난 경우
-      getBalance()
+      getAccountBalance()
     })
   }
 
-  const getBalance = () => {
-     const connection = new Connection(netWork.RPC)
-     chrome.storage.local.get('publicKey', async result => {
-       try {
-         const tempPublicKey = result.publicKey
-         if (!tempPublicKey) throw 'not exist public key'
+  const getAccountBalance = () => {
+    const connection = new velasWeb3.Connection(netWork.RPC)
+    chrome.storage.local.get('publicKey', async result => {
+      try {
+        const tempPublicKey = result.publicKey
+        if (!tempPublicKey) throw 'not exist public key'
 
-         setPublicKey(tempPublicKey)
-         const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
-         const tempBalance = await connection.getBalance(publicKeyObj)
-         setBalance(tempBalance)
-       } catch (e) {
-         console.log(e)
-         // 퍼블릭 키를 가져오지 못하는 경우 로그인으로 이동
-         if (e === 'not exist public key'){
-           setPage(Page.LOGIN)
-         }
-       }
-     })
+        setPublicKey(tempPublicKey)
+        const publicKeyObj = new velasWeb3.PublicKey(tempPublicKey)
+        const tempBalance = await connection.getBalance(publicKeyObj)
+        setBalance(tempBalance)
+      } catch (e) {
+        console.log(e)
+        // 퍼블릭 키를 가져오지 못하는 경우 로그인으로 이동
+        if (e === 'not exist public key') {
+          setPage(Page.LOGIN)
+        }
+      }
+    })
   }
 
   const copyPublicKey = () => {
@@ -99,7 +87,7 @@ const AccountComponent = () => {
         <img src="https://velas.com/assets/img/logo-footer.svg"></img>
       </div>
       <div className={classes.textAlignCenter}>
-        <h1>{balance} VLX</h1>
+        <h1>{balance / velasWeb3.LAMPORTS_PER_SOL} VLX</h1>
       </div>
     </div>
   )
