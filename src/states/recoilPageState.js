@@ -8,5 +8,5 @@ export const recoilPageState = atom({
 
 export const recoilNetWork = atom({
   key: 'networkState',
-  default: Network.MAINNET,
+  default: Network.TESTNET,
 })

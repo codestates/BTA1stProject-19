@@ -17,6 +17,6 @@ export const Network = {
   TESTNET: {
     RPC: 'https://api.testnet.velas.com',
     WEBSOCKET: 'wss://api.testnet.velas.com',
-    EXPLORER: 'https://native.velas.com/?cluster=testnet',
+    EXPLORER: 'https://native.velas.com',
   },
 }
