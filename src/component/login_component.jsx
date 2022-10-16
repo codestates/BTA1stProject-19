@@ -10,18 +10,24 @@ import {
   makeStyles,
   TextField,
 } from '@material-ui/core'
-import logo from '../img/velas-logo.png'
 import { Page } from '../enum/enum'
 import { IsSecretKeyValid } from '../api/keyPair'
 import * as crypto from 'crypto-js'
 import { UnlockWallet } from '../api/account'
+import ModalComponent from "./modal_component";
 
 const LoginComponent = () => {
   const [page, setPage] = useRecoilState(recoilPageState)
   const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [open, setOpen] = useState(false)
 
   const goToPage = pageName => {
     setPage(pageName)
+  }
+
+  const handleClose = () => {
+    setOpen(!open)
   }
 
   const handleChange = e => {
@@ -39,7 +45,8 @@ const LoginComponent = () => {
     chrome.storage.local.get('password', result => {
       const storagePassword = result.password
       if (!storagePassword) {
-        alert('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
+        setOpen(true)
+        setErrorMessage('지갑 정보가 존재하지 않습니다. 계정 복구를 진행해주세요.')
         return
       }
 
@@ -52,12 +59,14 @@ const LoginComponent = () => {
             UnlockWallet()
             setPage(Page.ACCOUNT)
           } else {
-            alert('계정이 존재하지 않습니다.')
+            setOpen(true)
+            setErrorMessage('계정이 존재하지 않습니다.')
             return
           }
         })
       } else {
-        alert('패스워드가 일치하지 않습니다')
+        setOpen(true)
+        setErrorMessage('패스워드가 일치하지 않습니다')
         return
       }
     })
@@ -93,6 +102,12 @@ const LoginComponent = () => {
 
   return (
     <div>
+      <ModalComponent
+        open={open}
+        handleClose={handleClose}
+        message={errorMessage}
+        title={'로그인 실패'}
+      />
       <Container className={classes.container}>
         <img
           className={classes.logoImage}
