@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { useRecoilState, selector, useRecoilValue } from 'recoil'
+import React, { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
 import icon from '../img/icon-128.png'
 import { hot } from 'react-hot-loader'
-import * as velaseWeb3 from '@velas/web3'
 import TestButton from './button_component'
-import { recoilPageState } from '../states/recoilPageState'
+import { recoilPageState, recoilNetWork } from '../states/recoilPageState'
 import { Page } from '../enum/enum'
 import { makeStyles } from '@material-ui/core'
 import Login from './login_component'
@@ -15,14 +14,6 @@ import Transfer from './transfer_component'
 import * as crypto from 'crypto-js'
 
 const GreetingComponent = () => {
-  const [page, setPage] = useRecoilState(recoilPageState)
-  const [test, setTest] = useState('')
-
-  useEffect(() => {
-    const testCode = crypto.SHA256('TESTSETSETEST').toString(crypto.enc.Hex)
-    console.log(testCode)
-  }, [])
-
   const classes = makeStyles(() => ({
     appRoot: {
       paddingTop: '56px',
